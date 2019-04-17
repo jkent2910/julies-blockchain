@@ -67,8 +67,8 @@ app.post('/api/transact', (req, res) => {
     res.json({ type: 'success', transaction });
 });
 
-app.get('api/transaction-pool-map', (req, res) => {
-   res.json(transactionPool.transactionMap);
+app.get('/api/transaction-pool-map', (req, res) => {
+    res.json(transactionPool.transactionMap);
 });
 
 app.get('/api/mine-transactions', (req, res) => {
