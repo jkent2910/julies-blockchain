@@ -1,2 +1,6 @@
-.DS_Store
-.cache/
+*node_modules*
+*dist*
+*.cache*
+*.cache*
+*dist*
+*secrets*
