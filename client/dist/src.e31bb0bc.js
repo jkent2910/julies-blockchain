@@ -46622,7 +46622,7 @@ function (_Component) {
         }, "Show Less"));
       }
 
-      return _react.default.createElement("div", null, _react.default.createElement("div", null, "Data: ", dataDisplay), ")", _react.default.createElement(_reactBootstrap.Button, {
+      return _react.default.createElement("div", null, _react.default.createElement("div", null, "Data: ", dataDisplay), _react.default.createElement(_reactBootstrap.Button, {
         bsStyle: "danger",
         bsSize: "small",
         onClick: this.toggleTransaction
@@ -46785,7 +46785,8 @@ function (_Component) {
 
     return _possibleConstructorReturn(_this, (_temp = _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(ConductTransaction)).call.apply(_getPrototypeOf2, [this].concat(args))), _this.state = {
       recipient: '',
-      amount: 0
+      amount: 0,
+      knownAddresses: []
     }, _this.updateRecipient = function (event) {
       _this.setState({
         recipient: event.target.value
@@ -46818,13 +46819,30 @@ function (_Component) {
   }
 
   _createClass(ConductTransaction, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      fetch("".concat(document.location.origin, "/api/known-addresses")).then(function (response) {
+        return response.json();
+      }).then(function (json) {
+        return _this2.setState({
+          knownAddresses: json
+        });
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
         className: "ConductTransaction"
       }, _react.default.createElement(_reactRouterDom.Link, {
         to: "/"
-      }, "Home"), _react.default.createElement("h3", null, "Conduct a Transaction"), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
+      }, "Home"), _react.default.createElement("h3", null, "Conduct a Transaction"), " ", _react.default.createElement("br", null), _react.default.createElement("h4", null, "Known Addresses"), this.state.knownAddresses.map(function (knownAddress) {
+        return _react.default.createElement("div", {
+          key: knownAddress
+        }, _react.default.createElement("div", null, knownAddress), _react.default.createElement("br", null));
+      }), _react.default.createElement("br", null), _react.default.createElement(_reactBootstrap.FormGroup, null, _react.default.createElement(_reactBootstrap.FormControl, {
         input: "text",
         placeholder: "recipient",
         value: this.state.recipient,
@@ -47107,7 +47125,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59899" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55835" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);

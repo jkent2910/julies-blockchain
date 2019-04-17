@@ -12,7 +12,7 @@ const isDevelopment = process.env.ENV === 'development';
 
 const DEFAULT_PORT = 3000;
 const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
-const REDIS_URL = isDevelopment ? 'redis//127.0.0.1:6379' : 'redis://h:pa112695fc653e9f40518b2859df33233a3fdcc1c730e233823f1a427c6dc89e3@ec2-107-23-137-160.compute-1.amazonaws.com:27609'
+const REDIS_URL = isDevelopment ? 'redis://127.0.0.1:6379' : 'redis://h:pa112695fc653e9f40518b2859df33233a3fdcc1c730e233823f1a427c6dc89e3@ec2-107-23-137-160.compute-1.amazonaws.com:27609'
 
 const app = express();
 const blockchain = new Blockchain();
@@ -84,6 +84,20 @@ app.get('/api/wallet-info', (req, res) => {
                         address: address }) })
 });
 
+app.get('/api/known-addresses', (req, res) => {
+   const addressMap = {};
+
+   for (let block of blockchain.chain) {
+       for (let transaction of block.data) {
+           const recipient = Object.keys(transaction.outputMap);
+
+           recipient.forEach(recipient => addressMap[recipient] = recipient);
+       }
+   }
+
+   res.json(Object.keys(addressMap));
+});
+
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
@@ -108,7 +122,7 @@ const syncWithRootState = () => {
   })
 };
 
-if (isDevelopment) {
+if (true) {
 
 
     const walletFoo = new Wallet();
